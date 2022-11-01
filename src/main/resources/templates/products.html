@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>List Product</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div><h1>Product List</h1></div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" th:href="@{/categories/}">List Category</a>
+                <a class="dropdown-item" th:href="@{/categories/new}">Create Categories</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Product</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" th:href="@{/products/}">List Products</a>
+                <a class="dropdown-item" th:href="@{/products/new}">Create Products</a>
+            </div>
+        </li>
+    </ul>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product : ${listProducts}">
+                <tr>
+                    <td>[[${product.name}]]</td>
+                    <td>[[${product.price}]]</td>
+                    <td>[[${product.category.name}]]</td>
+                    <td><img src="" style="height: 40px; width: 40px;"
+                             th:src="*{'data:image/jpeg;base64,' + {product.image}}"></td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
+                        &nbsp;
+                        <!--<a th:href="@{'/products/delete/' + ${product.id}}">Delete</a>-->
+                        <a id="btnDelete"
+                           th:onclick="'javascript:deleteData(' + ${product.id} +','+ '\''+products+'\''+')'"
+                           class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#AlertBox').removeClass('d-none');
+        $('#AlertBox').delay(3000).slideUp(500);
+    });
+
+    function deleteData(data, entity) {
+        if (confirm("Bạn có muốn xóa không") == true) {
+            window.location.href = "/" + entity + "/delete/" + data;
+        } else {
+            return false;
+        }
+    }
+</script>
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
