@@ -2,14 +2,18 @@ package com.example.feproduct.service.impl;
 
 
 import com.example.feproduct.client.ProductClient;
-import com.example.feproduct.entity.Product;
+import com.example.feproduct.model.Product;
 import com.example.feproduct.service.ProductService;
 import com.example.feproduct.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
@@ -21,7 +25,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProduct() {
-        return productClient.getAllProduct();
+        List<Product> products = productClient.getAllProduct();
+        String base64="";
+        for (Product i:  products){
+            String urlPath = imageUpload.UPLOAD_FOLDER+"//"+i.getImage();
+            Path path = Paths.get(urlPath);
+            try {
+                byte[] arr = Files.readAllBytes(path);
+                base64 = Base64.getEncoder().encodeToString(arr);
+                i.setImage(base64);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return products;
     }
 
     @Override
@@ -33,20 +50,18 @@ public class ProductServiceImpl implements ProductService {
                 if (imageProduct.getOriginalFilename().length() == 0) {
                     product.setImage(oldImg.getImage());
                 } else {
-                    product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
+                    imageUpload.uploadImage(imageProduct);
+                    String fileName = StringUtils.cleanPath(imageProduct.getOriginalFilename());
+                    product.setImage(fileName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            try {
-                imageUpload.uploadImage(imageProduct);
-                product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            imageUpload.uploadImage(imageProduct);
+            String fileName = StringUtils.cleanPath(imageProduct.getOriginalFilename());
+            product.setImage(fileName);
         }
-
         productClient.saveProduct(product);
     }
 

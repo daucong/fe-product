@@ -1,7 +1,7 @@
 package com.example.feproduct.service;
 
 
-import com.example.feproduct.entity.Category;
+import com.example.feproduct.model.Category;
 
 import java.util.List;
 

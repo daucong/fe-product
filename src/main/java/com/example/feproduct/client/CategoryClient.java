@@ -1,6 +1,6 @@
 package com.example.feproduct.client;
 
-import com.example.feproduct.entity.Category;
+import com.example.feproduct.model.Category;
 import com.google.gson.Gson;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

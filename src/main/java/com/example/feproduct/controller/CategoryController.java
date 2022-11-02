@@ -1,8 +1,7 @@
 package com.example.feproduct.controller;
 
-import com.example.feproduct.entity.Category;
+import com.example.feproduct.model.Category;
 import com.example.feproduct.service.CategoryService;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

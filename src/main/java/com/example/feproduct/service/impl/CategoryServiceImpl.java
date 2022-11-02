@@ -1,7 +1,7 @@
 package com.example.feproduct.service.impl;
 
 import com.example.feproduct.client.CategoryClient;
-import com.example.feproduct.entity.Category;
+import com.example.feproduct.model.Category;
 import com.example.feproduct.service.CategoryService;
 import org.springframework.stereotype.Service;
 

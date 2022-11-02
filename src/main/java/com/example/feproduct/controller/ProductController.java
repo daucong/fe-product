@@ -1,16 +1,17 @@
 package com.example.feproduct.controller;
 
-import com.example.feproduct.entity.Category;
-import com.example.feproduct.entity.Product;
+import com.example.feproduct.model.Category;
+import com.example.feproduct.model.Product;
 import com.example.feproduct.service.CategoryService;
 import com.example.feproduct.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -36,6 +37,11 @@ public class ProductController {
         Category category = new Category();
         category.setId(Integer.valueOf(product.getCategory_id()));
         product.setCategory(category);
+        try {
+            product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         productService.saveProduct(imageProduct, product);
         return "redirect:/products";
     }

@@ -1,6 +1,6 @@
 package com.example.feproduct.service;
 
-import com.example.feproduct.entity.Product;
+import com.example.feproduct.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

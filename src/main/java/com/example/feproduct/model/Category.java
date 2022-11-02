@@ -1,4 +1,4 @@
-package com.example.feproduct.entity;
+package com.example.feproduct.model;
 
 import lombok.Data;
 
