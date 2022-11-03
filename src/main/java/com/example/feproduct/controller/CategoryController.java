@@ -40,6 +40,7 @@ public class CategoryController extends BaseController {
             else
                 return showCategoryNewForm(model);
         }
+        categoryService.saveCategory(category);
         return "redirect:/categories";
     }
 

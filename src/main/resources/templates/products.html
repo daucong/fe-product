@@ -29,8 +29,12 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th>Name</th>
-                <th>Price</th>
+                <th>
+                    <a th:href="@{'/products/paging?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'">Name</a>
+                </th>
+                <th>
+                    <a th:href="@{'/products/paging?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'">Price</a>
+                </th>
                 <th>Category</th>
                 <th>Image</th>
                 <th>Action</th>
@@ -56,6 +60,33 @@
             </th:block>
             </tbody>
         </table>
+        <div class="row col-sm-10">
+                <div class="col-sm-2">
+                    Total Rows: [[${TotalItem}]]
+                </div>
+                <div class="col-sm-1">
+                    <span th:each="i :${#numbers.sequence(1, TotalPage)}">
+                        <a th:if="${CurrentPage != i}" th:href="@{'/products/paging?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">[[${i}]]</a>
+                        <span th:unless="${CurrentPage != i}">[[${i}]]</span>
+                    </span>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${CurrentPage > 1}" th:href="@{'/products/paging?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">First</a>
+                    <span th:unless="${CurrentPage > 1}">First</span>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products/paging?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Next</a>
+                    <span th:unless="${CurrentPage < TotalPage}">Next</span>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${CurrentPage > 1}" th:href="@{'/products/paging?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Previous</a>
+                    <span th:unless="${CurrentPage > 1}">Previous</span>
+                </div>
+                <div class="col-sm-1">
+                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products/paging?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Last</a>
+                    <span th:unless="${CurrentPage < TotalPage}">Last</span>
+                </div>
+        </div>
 
     </div>
 </div>

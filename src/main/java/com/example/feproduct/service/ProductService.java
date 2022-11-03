@@ -1,5 +1,6 @@
 package com.example.feproduct.service;
 
+import com.example.feproduct.model.Pageable;
 import com.example.feproduct.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,4 +14,8 @@ public interface ProductService {
     void deleteProduct(Integer id);
 
     Product findProductById(Integer id);
+
+    List<Product> getAllProductPaging(Pageable pageable);
+
+    int totalItem();
 }

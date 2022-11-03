@@ -2,6 +2,7 @@ package com.example.feproduct.service.impl;
 
 
 import com.example.feproduct.client.ProductClient;
+import com.example.feproduct.model.Pageable;
 import com.example.feproduct.model.Product;
 import com.example.feproduct.service.ProductService;
 import com.example.feproduct.utils.ImageUpload;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProduct() {
         List<Product> products = productClient.getAllProduct();
-        String base64="";
-        for (Product i:  products){
-            String urlPath = imageUpload.UPLOAD_FOLDER+"//"+i.getImage();
+        String base64 = "";
+        for (Product i : products) {
+            String urlPath = imageUpload.UPLOAD_FOLDER + "//" + i.getImage();
             Path path = Paths.get(urlPath);
             try {
                 byte[] arr = Files.readAllBytes(path);
@@ -73,5 +75,29 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findProductById(Integer id) {
         return productClient.findProductById(id);
+    }
+
+    @Override
+    public int totalItem() {
+        List<Product> total = productClient.getAllProduct();
+        return (int) total.size();
+    }
+
+    @Override
+    public List<Product> getAllProductPaging(Pageable pageable){
+        List<Product> products = productClient.getAllProductPaging(pageable);
+        String base64 = "";
+        for (Product i : products) {
+            String urlPath = imageUpload.UPLOAD_FOLDER + "//" + i.getImage();
+            Path path = Paths.get(urlPath);
+            try {
+                byte[] arr = Files.readAllBytes(path);
+                base64 = Base64.getEncoder().encodeToString(arr);
+                i.setImage(base64);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return products;
     }
 }

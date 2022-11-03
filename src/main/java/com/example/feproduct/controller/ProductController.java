@@ -1,9 +1,12 @@
 package com.example.feproduct.controller;
 
 import com.example.feproduct.model.Category;
+import com.example.feproduct.model.Pageable;
 import com.example.feproduct.model.Product;
 import com.example.feproduct.service.CategoryService;
 import com.example.feproduct.service.ProductService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,9 +51,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public String listProduct(Model model) {
-        List<Product> listProducts = productService.getAllProduct();
-        model.addAttribute("listProducts", listProducts);
-        return "products";
+        return showData(model,1,5,"ASC","id");
     }
 
     @GetMapping("/products/edit/{id}")
@@ -69,5 +70,20 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/products/paging")
+    public String showData(Model model,@RequestParam("page") Integer page,@RequestParam("limit") Integer limit,@RequestParam("sortname") String sortName,@RequestParam("sortby") String sortBy) {
+        Pageable pageable = new Pageable(page,limit,sortName,sortBy,null);
+        List<Product> products = productService.getAllProductPaging(pageable);
+        model.addAttribute("CurrentPage",page);
+        limit = 5;
+        sortName="ASC";
+        model.addAttribute("limit",limit);
+        model.addAttribute("sortName",sortName);
+        model.addAttribute("sortBy",sortBy);
+        model.addAttribute("TotalItem", productService.totalItem());
+        model.addAttribute("TotalPage",pageable.getTotalPage());
+        model.addAttribute("listProducts", products);
+        return "products";
+    }
 
 }
