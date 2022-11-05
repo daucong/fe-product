@@ -57,8 +57,12 @@ public class ProductController {
     @GetMapping("/products/edit/{id}")
     public String showEditProductForm(@PathVariable("id") Integer id, Model model) {
         Product product = productService.findProductById(id);
-        model.addAttribute("product", product);
-
+        if(product != null){
+            model.addAttribute("product", product);
+        }
+        if(product.getCategory()!=null){
+            product.setCategory_id(product.getCategory().getId().toString());
+        }
         List<Category> listCategories = categoryService.getAllCategory();
         model.addAttribute("listCategories", listCategories);
         return "product_form";

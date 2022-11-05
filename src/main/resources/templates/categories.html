@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>List Category</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/category.js"></script>
 </head>
 <body>
     <div class="container text-center">
@@ -13,7 +15,7 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" th:href="@{/categories/}">List Category</a>
-                    <a class="dropdown-item" th:href="@{/categories/new}">Create Categories</a>
+                    <a class="dropdown-item" id="addCategories" th:href="@{/categories/new}">Create Categories</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -39,7 +41,7 @@
                             <td>
                                 <a class="btn btn-primary" th:href="@{'/categories/edit/' + ${category.id}}">Edit</a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-danger" th:href="@{'/categories/delete/' + ${category.id}}">Delete</a>
+                                <a class="btn btn-danger" id="delete" th:href="@{'/categories/delete/' + ${category.id}}">Delete</a>
                             </td>
                         </tr>
                     </th:block>
@@ -48,6 +50,7 @@
 
         </div>
     </div>
+
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 
