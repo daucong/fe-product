@@ -11,8 +11,9 @@
 <div class="container text-center">
     <div th:if="${category.id == null}"><h1>Create New Category</h1></div>
     <div th:unless="${category.id == null}"><h1>Edit Category</h1></div>
-    <form id="category" th:action="@{/categories/save}" th:object="${category}" method="post" style="max-width: 600px;margin: 0 auto;">
-        <input type="hidden" th:field="*{id}" th:value="${category.id}">
+    <!--th:action="@{/categories/save}"-->
+    <form onsubmit="return false" th:object="${category}" method="post" style="max-width: 600px;margin: 0 auto;">
+        <input type="hidden" id="id" th:field="*{id}" th:value="${category.id}">
         <div class="m-3">
             <div class="form-group row">
                 <label class="col-form-label col-sm-4">Category Name: </label>
@@ -22,7 +23,7 @@
                 </div>
             </div>
             <div class="text-center p-3">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button th:onclick="'javascript:SaveCategory('+${category.id} +')'" type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
     </form>

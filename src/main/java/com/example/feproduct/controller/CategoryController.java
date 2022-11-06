@@ -31,15 +31,15 @@ public class CategoryController extends BaseController {
 
     @PostMapping("/categories/save")
     public String saveCategory(Category category, Model model) {
-//        String oldCategory= category.getName();
-//        Category newName = categoryService.getCategoryByName(oldCategory);
-//        if(newName!=null) {
-//            ShowMessage(model, "Tên danh mục đã tồn tại", "error");
-//            if (category.getId() != null)
-//                return showEditCategoryForm(category.getId(), model);
-//            else
-//                return showCategoryNewForm(model);
-//        }
+        String oldCategory= category.getName();
+        Category newName = categoryService.getCategoryByName(oldCategory);
+        if(newName!=null) {
+            ShowMessage(model, "Tên danh mục đã tồn tại", "error");
+            if (category.getId() != null)
+                return showEditCategoryForm(category.getId(), model);
+            else
+                return showCategoryNewForm(model);
+        }
         categoryService.saveCategory(category);
         return "redirect:/categories";
     }
