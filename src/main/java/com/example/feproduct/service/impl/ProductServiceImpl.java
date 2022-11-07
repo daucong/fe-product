@@ -30,15 +30,16 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productClient.getAllProduct();
         String base64 = "";
         for (Product i : products) {
-            String urlPath = imageUpload.UPLOAD_FOLDER + "//" + i.getImage();
+            String urlPath = imageUpload.UPLOAD_FOLDER + "\\" + i.getImage();
             Path path = Paths.get(urlPath);
-            try {
-                byte[] arr = Files.readAllBytes(path);
-                base64 = Base64.getEncoder().encodeToString(arr);
-                i.setImage(base64);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                byte[] arr = Files.readAllBytes(path);
+//                base64 = Base64.getEncoder().encodeToString(arr);
+//                i.setImage(base64);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            i.setImage(String.valueOf(path));
         }
         return products;
     }
@@ -88,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productClient.getAllProductPaging(pageable);
         String base64 = "";
         for (Product i : products) {
-            String urlPath = imageUpload.UPLOAD_FOLDER + "//" + i.getImage();
+            String urlPath = imageUpload.UPLOAD_FOLDER + "\\" + i.getImage();
             Path path = Paths.get(urlPath);
             try {
                 byte[] arr = Files.readAllBytes(path);
@@ -98,6 +99,7 @@ public class ProductServiceImpl implements ProductService {
                 e.printStackTrace();
             }
         }
+
         return products;
     }
 }

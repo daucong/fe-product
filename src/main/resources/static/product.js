@@ -9,6 +9,7 @@ function deleteProduct(id) {
             data : JSON.stringify(id),
             success: function (result){
                 if (confirm("Xóa thành công!") == true) {
+                    // $('#row_'+data).slideUp(0);
                     window.location.href ='/products';
                 } else {
                     return false;

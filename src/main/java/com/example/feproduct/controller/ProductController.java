@@ -40,11 +40,6 @@ public class ProductController {
         Category category = new Category();
         category.setId(Integer.valueOf(product.getCategory_id()));
         product.setCategory(category);
-        try {
-            product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         productService.saveProduct(imageProduct, product);
         return "redirect:/products";
     }
