@@ -21,14 +21,15 @@ function deleteCategory(id) {
     }
 }
 function SaveCategory(id) {
-    var formData = {
-        name : $("#name").val(),
-    }
+
     if (id==null) {
+        var formData = {
+            name : $("#name").val(),
+        }
         $.ajax({
             type : "POST",
             contentType : "application/json",
-            url : "http://localhost:8080/api/categories/",
+            url : "http://localhost:8080/api/categories",
             data : JSON.stringify(formData),
             success: function(result) {
                 if (confirm("Save Successfully!") == true) {
@@ -44,10 +45,14 @@ function SaveCategory(id) {
         });
     }
     else {
+        var formData = {
+            id : $("#id").val(),
+            name : $("#name").val(),
+        }
             $.ajax({
-                type : "PUT",
+                type : "POST",
                 contentType : "application/json",
-                url : "http://localhost:8080/api/categories/" + id,
+                url : "http://localhost:8080/api/categories",
                 data : JSON.stringify(formData),
                 success: function(result) {
                     if (confirm("Edit Successfully!") == true) {

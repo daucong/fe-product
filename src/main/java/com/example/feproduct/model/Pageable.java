@@ -15,5 +15,12 @@ public class Pageable {
     private String sortname;
     private String sortby;
     private Integer totalPage;
+    private Integer totalItem;
 
+    public Pageable(Integer page, Integer limit, String sortname, String sortby) {
+        this.page = page;
+        this.limit = limit;
+        this.sortname = sortname;
+        this.sortby = sortby;
+    }
 }

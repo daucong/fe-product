@@ -1,15 +1,12 @@
 package com.example.feproduct.client;
 
 import com.example.feproduct.model.Category;
-import com.google.gson.Gson;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class CategoryClient {
     RestTemplate restTemplate = new RestTemplate();
@@ -24,21 +21,17 @@ public class CategoryClient {
 
 
     public void saveCategory(Category category) {
-        System.out.println(new Gson().toJson(category));
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> request = new HttpEntity<String>(new Gson().toJson(category).toString(), headers);
-        String response = restTemplate.postForObject(ROOT_URI+ "/", request, String.class);
-//        ResponseEntity<User> response = restTemplate.postForEntity(ROOT_URI, user, User.class);
-//        return response.getBody();
+//        System.out.println(new Gson().toJson(category));
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<String> request = new HttpEntity<String>(new Gson().toJson(category).toString(), headers);
+//        String response = restTemplate.postForObject(ROOT_URI+ "/", request, String.class);
+        ResponseEntity<Category> response = restTemplate.postForEntity(ROOT_URI, category, Category.class);
+        response.getBody();
     }
 
     public Category findCategoryById(Integer id) {
         ResponseEntity<Category> response = restTemplate.getForEntity(ROOT_URI + "/" + id, Category.class);
-        return response.getBody();
-    }
-    public Category findCategoryByNam(String name) {
-        ResponseEntity<Category> response = restTemplate.getForEntity(ROOT_URI + "/name/" + name, Category.class);
         return response.getBody();
     }
 
