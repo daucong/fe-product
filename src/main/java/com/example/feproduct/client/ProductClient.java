@@ -20,12 +20,6 @@ public class ProductClient {
 
     final String ROOT_URI = "http://localhost:8080/api/products";
 
-//    public List<Product> getAllProduct() {
-//        ResponseEntity<Product[]> response = restTemplate.getForEntity(ROOT_URI, Product[].class);
-//        return Arrays.asList(response.getBody());
-//
-//    }
-
     public void saveProduct(Product product) {
 //        product.setCategory_id(null);
 //        System.out.println(new Gson().toJson(product));
@@ -48,7 +42,26 @@ public class ProductClient {
         return response.getBody();
     }
 
-    public List<Product> getAllProductPaging(Pageable pageable) {
+//    public List<Product> getAllProductPaging(Pageable pageable, String query) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Accept", "application/json");
+//        HttpEntity entity = new HttpEntity(headers);
+//        String url = ROOT_URI+"/search"+"?page="+pageable.getPage()+"&limit="+pageable.getLimit()
+//                +"&sortname="+pageable.getSortname()+"&sortby="+pageable.getSortby()+"&query="+query;
+//
+//        HttpEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+//        System.out.println(response);
+//
+//        JsonObject responseJSON = JsonParser.parseString(response.getBody()).getAsJsonObject();
+//        //get  totalPage and totel Item
+//        pageable.setTotalPage(Integer.parseInt(responseJSON.get(("totalPages")).toString()));
+//        pageable.setTotalItem(Integer.parseInt(responseJSON.get(("totalElements")).toString()));
+//        //get list product
+//        JsonArray json = JsonParser.parseString(responseJSON.get("content").toString()).getAsJsonArray();
+//        List<Product> lists = new Gson().fromJson(json, new TypeToken<List<Product>>() {}.getType());
+//        return lists;
+//    }
+    public List<Product> getAllWithPage(Pageable pageable) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", "application/json");
         HttpEntity entity = new HttpEntity(headers);
@@ -65,6 +78,33 @@ public class ProductClient {
         //get list product
         JsonArray json = JsonParser.parseString(responseJSON.get("content").toString()).getAsJsonArray();
         List<Product> lists = new Gson().fromJson(json, new TypeToken<List<Product>>() {}.getType());
+        return lists;
+    }
+    public List<Product> getAllWithPage(Pageable pageable, String query, StringBuilder message) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "application/json");
+        HttpEntity entity = new HttpEntity(headers);
+        String url = ROOT_URI+"?page="+pageable.getPage()
+                +"&limit="+pageable.getLimit()
+                +"&sortname="+pageable.getSortname()
+                +"&sortby="+pageable.getSortby()
+                +"&query="+query;
+        List<Product> lists = new ArrayList<>();
+        try {
+            HttpEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            System.out.println(response);
+
+            JsonObject responseJSON = JsonParser.parseString(response.getBody()).getAsJsonObject();
+            //get  totalPage and totel Item
+            pageable.setTotalPage(Integer.parseInt(responseJSON.get(("totalPages")).toString()));
+            pageable.setTotalItem(Integer.parseInt(responseJSON.get(("totalElements")).toString()));
+            //get list product
+            JsonArray json = JsonParser.parseString(responseJSON.get("content").toString()).getAsJsonArray();
+            lists = new Gson().fromJson(json, new TypeToken<List<Product>>() {}.getType());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            message.append(e.getMessage());
+        }
         return lists;
     }
 }

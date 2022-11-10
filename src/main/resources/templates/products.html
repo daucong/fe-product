@@ -8,7 +8,6 @@
     <script src="/product.js"></script>
 </head>
 <body>
-<form>
 <div class="container text-center">
     <div><h1>Product List</h1></div>
     <ul class="nav nav-tabs">
@@ -27,15 +26,20 @@
             </div>
         </li>
     </ul>
+    <form th:action="@{/products}" method="get">
+        Filter: <input type="text" name="query" id="query" size="50" th:value="${query}"  />
+        &nbsp;
+        <input type="submit" value="Search" />
+    </form>
     <div>
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
                 <th>
-                    <a th:href="@{'/products/paging?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'">Name</a>
+                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'">Name</a>
                 </th>
                 <th>
-                    <a th:href="@{'/products/paging?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'">Price</a>
+                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'">Price</a>
                 </th>
                 <th>Category</th>
                 <th>Image</th>
@@ -46,7 +50,7 @@
             <th:block th:each="product : ${listProducts}">
                 <tr th:id="${'row_'+product.id}">
                     <td class="td_name">[[${product.name}]]</td>
-                    <td>[[${product.price}]]</td>
+                    <td pattern="(d{3})([.])(d{2})">[[${product.price}]] ₫</td>
                     <td>[[${product.category.name}]]</td>
                     <td><img src="" style="height: 40px; width: 40px;"
                              th:src="*{'data:image/jpeg;base64,' + {product.image}}"></td>
@@ -66,24 +70,24 @@
                 </div>
                 <div class="col-sm-1">
                     <span th:each="i :${#numbers.sequence(1, TotalPage)}">
-                        <a th:if="${CurrentPage != i}" th:href="@{'/products/paging?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">[[${i}]]</a>
+                        <a th:if="${CurrentPage != i}" th:href="@{'/products?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">[[${i}]]</a>
                         <span th:unless="${CurrentPage != i}">[[${i}]]</span>
                     </span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${CurrentPage > 1}" th:href="@{'/products/paging?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">First</a>
+                    <a th:if="${CurrentPage > 1}" th:href="@{'/products?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">First</a>
                     <span th:unless="${CurrentPage > 1}">First</span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products/paging?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Next</a>
+                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Next</a>
                     <span th:unless="${CurrentPage < TotalPage}">Next</span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${CurrentPage > 1}" th:href="@{'/products/paging?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Previous</a>
+                    <a th:if="${CurrentPage > 1}" th:href="@{'/products?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Previous</a>
                     <span th:unless="${CurrentPage > 1}">Previous</span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products/paging?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Last</a>
+                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Last</a>
                     <span th:unless="${CurrentPage < TotalPage}">Last</span>
                 </div>
         </div>
@@ -104,6 +108,17 @@
         <!--}-->
     <!--}-->
 <!--</script>-->
+<script type="text/javascript">
+    $(function (){
+        var message ;
+        message : [[${message}]]
+        if (message.toString()!=""){
+            alert(message)
+        }
+    });
+
+
+</script>
 
 <!-- jQuery library -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
@@ -113,7 +128,7 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-</form>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
 </html>

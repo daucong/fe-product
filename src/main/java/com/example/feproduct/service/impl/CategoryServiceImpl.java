@@ -40,7 +40,12 @@ public class CategoryServiceImpl implements BaseService<Category> {
     }
 
     @Override
-    public List<Category> getAllListPaging(Pageable pageable) {
+    public List<Category> getAllListPagingAndSearch(Pageable pageable, String query, StringBuilder message) {
+        return null;
+    }
+
+    @Override
+    public List<Category> getAllWithPage(Pageable pageable) {
         return null;
     }
 

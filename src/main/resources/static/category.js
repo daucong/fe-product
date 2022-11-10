@@ -63,7 +63,7 @@ function SaveCategory(id) {
                 },
                 error: function(err) {
                     alert("Data already exists!")
-                    console.log("ERROR: ", e);
+                    console.log("ERROR: ", err);
                 }
             });
     }

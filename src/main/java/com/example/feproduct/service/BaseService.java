@@ -18,5 +18,7 @@ public interface BaseService<T> {
 
     T getOneById(Integer id);
 
-    List<T> getAllListPaging(Pageable pageable);
+    List<T> getAllListPagingAndSearch(Pageable pageable, String query, StringBuilder message);
+
+    List<T> getAllWithPage(Pageable pageable);
 }

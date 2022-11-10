@@ -9,9 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -20,7 +23,7 @@ public class ProductController {
     @Autowired
     private BaseService<Category> categoryService;
 
-    @GetMapping("/products/new")
+    @GetMapping("/new")
     public String showNewProductForm(Model model) {
         List<Category> listCategories = categoryService.getAllList();
         model.addAttribute("product", new Product());
@@ -28,28 +31,24 @@ public class ProductController {
         return "product_form";
     }
 
-    @PostMapping("/products/save")
+    @PostMapping("/save")
     public String saveProduct(@ModelAttribute("product") Product product,
-                              @RequestParam("imageProduct") MultipartFile imageProduct) {
+                              @RequestParam("imageProduct") MultipartFile imageProduct, RedirectAttributes attributes) {
         Category category = new Category();
         category.setId(Integer.valueOf(product.getCategory_id()));
         product.setCategory(category);
         productService.saveOrEditWithImg(imageProduct, product);
+        attributes.addFlashAttribute("message", "Saved successfully!");
         return "redirect:/products";
     }
 
-    @GetMapping("/products")
-    public String listProduct(Model model) {
-        return showData(model,1,5,"ASC","id");
-    }
-
-    @GetMapping("/products/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String showEditProductForm(@PathVariable("id") Integer id, Model model) {
-       Product product = productService.getOneById(id);
-        if(product != null){
+        Product product = productService.getOneById(id);
+        if (product != null) {
             model.addAttribute("product", product);
         }
-        if(product.getCategory()!=null){
+        if (product.getCategory() != null) {
             product.setCategory_id(product.getCategory().getId().toString());
         }
         List<Category> listCategories = categoryService.getAllList();
@@ -57,26 +56,33 @@ public class ProductController {
         return "product_form";
     }
 
-    @GetMapping("/products/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String DeleteProduct(@PathVariable("id") Integer id) {
         productService.delete(id);
         return "redirect:/products";
     }
 
-    @GetMapping("/products/paging")
-    public String showData(Model model,@RequestParam("page") Integer page,@RequestParam("limit") Integer limit,@RequestParam("sortname") String sortName,@RequestParam("sortby") String sortBy) {
-        Pageable pageable = new Pageable(page,limit,sortName,sortBy);
-        List<Product> products = productService.getAllListPaging(pageable);
-        model.addAttribute("CurrentPage",page);
-        limit = 5;
-        sortName="ASC";
-        model.addAttribute("limit",limit);
-        model.addAttribute("sortName",sortName);
-        model.addAttribute("sortBy",sortBy);
-        model.addAttribute("TotalItem", pageable.getTotalPage());
-        model.addAttribute("TotalPage",pageable.getTotalPage());
+    @GetMapping("")
+    public String showDataWithPage(Model model, @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                   @RequestParam(value = "limit", defaultValue = "5") Integer limit,
+                                   @RequestParam(value = "sortname" ,defaultValue = "ASC") String sortName,
+                                   @RequestParam(value = "sortby", defaultValue = "id") String sortBy,
+                                    @RequestParam(value = "query", required = false) String query) {
+        Pageable pageable = new Pageable(page, limit, sortName, sortBy);
+        StringBuilder message = new StringBuilder("");
+        List<Product> products = productService.getAllListPagingAndSearch(pageable,query,message);
+        model.addAttribute("message", message);
+        model.addAttribute("CurrentPage", page);
+        model.addAttribute("query", query);
+        model.addAttribute("limit", limit);
+        model.addAttribute("sortName", sortName);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("TotalItem", pageable.getTotalItem());
+        if (pageable.getTotalPage()==null){
+            pageable.setTotalPage(0);
+        }
+        model.addAttribute("TotalPage", pageable.getTotalPage());
         model.addAttribute("listProducts", products);
         return "products";
     }
-
 }

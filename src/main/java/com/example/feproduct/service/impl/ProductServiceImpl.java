@@ -70,22 +70,27 @@ public class ProductServiceImpl implements BaseService<Product> {
     }
 
     @Override
-    public List<Product> getAllListPaging(Pageable pageable) {
-        List<Product> products = productClient.getAllProductPaging(pageable);
-        String base64 = "";
-        for (Product i : products) {
-            String urlPath = imageUpload.UPLOAD_FOLDER + "\\" + i.getImage();
-            Path path = Paths.get(urlPath);
-            try {
-                byte[] arr = Files.readAllBytes(path);
-                base64 = Base64.getEncoder().encodeToString(arr);
-                i.setImage(base64);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public List<Product> getAllListPagingAndSearch(Pageable pageable, String query, StringBuilder message) {
+            List<Product> products = productClient.getAllWithPage(pageable, query, message);
+            String base64 = "";
+            for (Product i : products) {
+                String urlPath = imageUpload.UPLOAD_FOLDER + "\\" + i.getImage();
+                Path path = Paths.get(urlPath);
+                try {
+                    byte[] arr = Files.readAllBytes(path);
+                    base64 = Base64.getEncoder().encodeToString(arr);
+                    i.setImage(base64);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-        return products;
+            }
+            return products;
+    }
+
+    @Override
+    public List<Product> getAllWithPage(Pageable pageable) {
+        return null;
     }
 
 //    @Override
