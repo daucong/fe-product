@@ -1,9 +1,11 @@
 function deleteCategory(id) {
     var data = id;
     var name = $('#row_'+data).children('td.td_name').text();
-    if (confirm("Bạn có muốn xóa " + name + " không???")) {
+    if (confirm("Bạn có muốn xóa " + name + " không ???")) {
         $.ajax({
             type : "DELETE",
+            crossDomain: true,
+            dataType: 'jsonp',
             contentType : "application/json",
             url : "http://localhost:8080/api/categories/" + id,
             data : JSON.stringify(id),
@@ -15,8 +17,9 @@ function deleteCategory(id) {
                 }
             },
             error: function (error) {
-                console.log(error)
-            }
+                alert(error.message)
+            },
+            beforeSend: setHeader
         });
     }
 }

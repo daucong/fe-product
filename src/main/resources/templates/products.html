@@ -12,6 +12,13 @@
     <div><h1>Product List</h1></div>
     <ul class="nav nav-tabs">
         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">User</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" th:href="@{/users/}">List User</a>
+                <a class="dropdown-item" th:href="@{/users/new}">Create Users</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" th:href="@{/categories/}">List Category</a>
