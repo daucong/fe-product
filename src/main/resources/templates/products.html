@@ -34,19 +34,19 @@
         </li>
     </ul>
     <form th:action="@{/products}" method="get">
-        Filter: <input type="text" name="query" id="query" size="50" th:value="${query}"  />
+        Filter: <input type="text" name="query"  size="50" th:value="${query}"/>
         &nbsp;
-        <input type="submit" value="Search" />
+        <input type="submit" value="Search"/>
     </form>
     <div>
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
                 <th>
-                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'">Name</a>
+                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'+'&query='+${query}">Name</a>
                 </th>
                 <th>
-                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'">Price</a>
+                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'+'&query='+${query}">Price</a>
                 </th>
                 <th>Category</th>
                 <th>Image</th>
@@ -72,54 +72,59 @@
             </tbody>
         </table>
         <div class="row col-sm-10">
-                <div class="col-sm-2">
-                    Total Rows: [[${TotalItem}]]
-                </div>
-                <div class="col-sm-1">
+            <div class="col-sm-2">
+                Total Rows: [[${TotalItem}]]
+            </div>
+            <div class="col-sm-1">
                     <span th:each="i :${#numbers.sequence(1, TotalPage)}">
-                        <a th:if="${CurrentPage != i}" th:href="@{'/products?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">[[${i}]]</a>
+                        <a th:if="${CurrentPage != i}"
+                           th:href="@{'/products?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">[[${i}]]</a>
                         <span th:unless="${CurrentPage != i}">[[${i}]]</span>
                     </span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${CurrentPage > 1}" th:href="@{'/products?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">First</a>
-                    <span th:unless="${CurrentPage > 1}">First</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Next</a>
-                    <span th:unless="${CurrentPage < TotalPage}">Next</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${CurrentPage > 1}" th:href="@{'/products?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Previous</a>
-                    <span th:unless="${CurrentPage > 1}">Previous</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${CurrentPage < TotalPage}" th:href="@{'/products?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'">Last</a>
-                    <span th:unless="${CurrentPage < TotalPage}">Last</span>
-                </div>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${CurrentPage > 1}"
+                   th:href="@{'/products?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">First</a>
+                <span th:unless="${CurrentPage > 1}">First</span>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${CurrentPage < TotalPage}"
+                   th:href="@{'/products?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Next</a>
+                <span th:unless="${CurrentPage < TotalPage}">Next</span>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${CurrentPage > 1}"
+                   th:href="@{'/products?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Previous</a>
+                <span th:unless="${CurrentPage > 1}">Previous</span>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${CurrentPage < TotalPage}"
+                   th:href="@{'/products?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Last</a>
+                <span th:unless="${CurrentPage < TotalPage}">Last</span>
+            </div>
         </div>
 
     </div>
 </div>
 <!--<script>-->
-    <!--$(function () {-->
-        <!--$('#AlertBox').removeClass('d-none');-->
-        <!--$('#AlertBox').delay(3000).slideUp(500);-->
-    <!--});-->
+<!--$(function () {-->
+<!--$('#AlertBox').removeClass('d-none');-->
+<!--$('#AlertBox').delay(3000).slideUp(500);-->
+<!--});-->
 
-    <!--function deleteData(data, entity) {-->
-        <!--if (confirm("Bạn có muốn xóa không") == true) {-->
-            <!--window.location.href = "/" + entity + "/delete/" + data;-->
-        <!--} else {-->
-            <!--return false;-->
-        <!--}-->
-    <!--}-->
+<!--function deleteData(data, entity) {-->
+<!--if (confirm("Bạn có muốn xóa không") == true) {-->
+<!--window.location.href = "/" + entity + "/delete/" + data;-->
+<!--} else {-->
+<!--return false;-->
+<!--}-->
+<!--}-->
 <!--</script>-->
 <script type="text/javascript">
-    $(function (){
-        var message ;
+    $(function () {
+        var message;
         message : [[${message}]]
-        if (message.toString()!=""){
+        if (message.toString() != "") {
             alert(message)
         }
     });

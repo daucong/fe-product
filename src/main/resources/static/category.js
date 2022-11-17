@@ -4,8 +4,6 @@ function deleteCategory(id) {
     if (confirm("Bạn có muốn xóa " + name + " không ???")) {
         $.ajax({
             type : "DELETE",
-            crossDomain: true,
-            dataType: 'jsonp',
             contentType : "application/json",
             url : "http://localhost:8080/api/categories/" + id,
             data : JSON.stringify(id),
@@ -16,10 +14,9 @@ function deleteCategory(id) {
                     return false;
                 }
             },
-            error: function (error) {
-                alert(error.message)
+            error: function (er) {
+                alert("Bạn phải xóa hết các sản phẩm có liên quan đến danh mục trước")
             },
-            beforeSend: setHeader
         });
     }
 }

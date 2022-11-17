@@ -70,7 +70,6 @@ public class ProductController {
                                     @RequestParam(value = "query", required = false) String query) {
         Pageable pageable = new Pageable(page, limit, sortName, sortBy);
         StringBuilder message = new StringBuilder("");
-        List<Product> products = productService.getAllListPagingAndSearch(pageable,query,message);
         model.addAttribute("message", message);
         model.addAttribute("CurrentPage", page);
         model.addAttribute("query", query);
@@ -81,6 +80,7 @@ public class ProductController {
         if (pageable.getTotalPage()==null){
             pageable.setTotalPage(0);
         }
+        List<Product> products = productService.getAllListPagingAndSearch(pageable,query,message);
         model.addAttribute("TotalPage", pageable.getTotalPage());
         model.addAttribute("listProducts", products);
         return "products";
