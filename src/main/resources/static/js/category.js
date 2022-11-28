@@ -5,7 +5,7 @@ function deleteCategory(id) {
         $.ajax({
             type : "DELETE",
             contentType : "application/json",
-            url : "http://localhost:8080/api/categories/" + id,
+            url : "http://localhost:8081/api/categories/" + id,
             data : JSON.stringify(id),
             success: function (result){
                 if (confirm("Xóa thành công!") == true) {
@@ -29,7 +29,7 @@ function SaveCategory(id) {
         $.ajax({
             type : "POST",
             contentType : "application/json",
-            url : "http://localhost:8080/api/categories",
+            url : "http://localhost:8081/api/categories",
             data : JSON.stringify(formData),
             success: function(result) {
                 if (confirm("Save Successfully!") == true) {
@@ -52,7 +52,7 @@ function SaveCategory(id) {
             $.ajax({
                 type : "POST",
                 contentType : "application/json",
-                url : "http://localhost:8080/api/categories",
+                url : "http://localhost:8081/api/categories",
                 data : JSON.stringify(formData),
                 success: function(result) {
                     if (confirm("Edit Successfully!") == true) {

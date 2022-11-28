@@ -5,7 +5,7 @@ function deleteProduct(id) {
         $.ajax({
             type : "DELETE",
             contentType : "application/json",
-            url : "http://localhost:8080/api/products/" + id,
+            url : "http://localhost:8081/api/products/" + id,
             data : JSON.stringify(id),
             success: function (result){
                 if (confirm("Xóa thành công!") == true) {

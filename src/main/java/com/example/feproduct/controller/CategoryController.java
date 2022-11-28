@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 @Controller
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 public class CategoryController extends BaseController {
     @Autowired
     private BaseService<Category> categoryService;
@@ -32,7 +32,7 @@ public class CategoryController extends BaseController {
     @PostMapping("/save")
     public String saveCategory(Category category, Model model) {
         categoryService.saveOrEdit(category);
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
 
     @GetMapping("/edit/{id}")
@@ -45,7 +45,7 @@ public class CategoryController extends BaseController {
     @GetMapping("/delete/{id}")
     public String DeleteCategory(@PathVariable("id") Integer id) {
         categoryService.delete(id);
-        return "redirect:/categories";
+        return "redirect:/admin/categories";
     }
 
 }

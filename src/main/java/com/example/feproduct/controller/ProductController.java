@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/admin/products")
 public class ProductController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class ProductController {
         product.setCategory(category);
         productService.saveOrEditWithImg(imageProduct, product);
         attributes.addFlashAttribute("message", "Saved successfully!");
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/edit/{id}")
@@ -59,7 +59,7 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public String DeleteProduct(@PathVariable("id") Integer id) {
         productService.delete(id);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("")
@@ -70,6 +70,7 @@ public class ProductController {
                                     @RequestParam(value = "query", required = false) String query) {
         Pageable pageable = new Pageable(page, limit, sortName, sortBy);
         StringBuilder message = new StringBuilder("");
+        List<Product> products = productService.getAllListPagingAndSearch(pageable,query,message);
         model.addAttribute("message", message);
         model.addAttribute("CurrentPage", page);
         model.addAttribute("query", query);
@@ -80,7 +81,6 @@ public class ProductController {
         if (pageable.getTotalPage()==null){
             pageable.setTotalPage(0);
         }
-        List<Product> products = productService.getAllListPagingAndSearch(pageable,query,message);
         model.addAttribute("TotalPage", pageable.getTotalPage());
         model.addAttribute("listProducts", products);
         return "products";

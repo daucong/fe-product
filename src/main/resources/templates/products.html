@@ -3,9 +3,10 @@
 <head>
     <title>List Product</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/product.js"></script>
+    <link rel="stylesheet" th:href="@{/css/Bootstrap v4.5.2.css}">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap v4.6.1.css}">
+    <link rel="stylesheet"  th:href="@{/css/dataTables.css}">
+    <script th:src="@{/js/product.js}"></script>
 </head>
 <body>
 <div class="container text-center">
@@ -14,39 +15,39 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">User</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" th:href="@{/users/}">List User</a>
-                <a class="dropdown-item" th:href="@{/users/new}">Create Users</a>
+                <a class="dropdown-item" th:href="@{/admin/users/}">List User</a>
+                <a class="dropdown-item" th:href="@{/admin/users/new}">Create Users</a>
             </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Category</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" th:href="@{/categories/}">List Category</a>
-                <a class="dropdown-item" th:href="@{/categories/new}">Create Categories</a>
+                <a class="dropdown-item" th:href="@{/admin/categories/}">List Category</a>
+                <a class="dropdown-item" th:href="@{/admin/categories/new}">Create Categories</a>
             </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Product</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" th:href="@{/products/}">List Products</a>
-                <a class="dropdown-item" th:href="@{/products/new}">Create Products</a>
+                <a class="dropdown-item" th:href="@{/admin/products/}">List Products</a>
+                <a class="dropdown-item" th:href="@{/admin/products/new}">Create Products</a>
             </div>
         </li>
     </ul>
-    <form th:action="@{/products}" method="get">
+    <form th:action="@{/admin/products}" method="get">
         Filter: <input type="text" name="query"  size="50" th:value="${query}"/>
         &nbsp;
         <input type="submit" value="Search"/>
     </form>
     <div>
-        <table class="table table-bordered">
-            <thead class="thead-dark">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead >
             <tr>
                 <th>
-                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'+'&query='+${query}">Name</a>
+                    <a th:href="@{'/admin/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=name'+'&query='+${query}">Name</a>
                 </th>
                 <th>
-                    <a th:href="@{'/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'+'&query='+${query}">Price</a>
+                    <a th:href="@{'/admin/products?page=' + ${CurrentPage}} + '&limit='+${limit}+'&sortname='+${sortName}+'&sortby=price'+'&query='+${query}">Price</a>
                 </th>
                 <th>Category</th>
                 <th>Image</th>
@@ -62,7 +63,7 @@
                     <td><img src="" style="height: 40px; width: 40px;"
                              th:src="*{'data:image/jpeg;base64,' + {product.image}}"></td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
+                        <a class="btn btn-primary" th:href="@{'/admin/products/edit/' + ${product.id}}">Edit</a>
                         &nbsp;
                         <a th:onclick="'javascript:deleteProduct('+${product.id} +')'"
                            class="btn btn-danger">Delete</a>
@@ -78,28 +79,28 @@
             <div class="col-sm-1">
                     <span th:each="i :${#numbers.sequence(1, TotalPage)}">
                         <a th:if="${CurrentPage != i}"
-                           th:href="@{'/products?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">[[${i}]]</a>
+                           th:href="@{'/admin/products?page='+${i}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">[[${i}]]</a>
                         <span th:unless="${CurrentPage != i}">[[${i}]]</span>
                     </span>
             </div>
             <div class="col-sm-1">
                 <a th:if="${CurrentPage > 1}"
-                   th:href="@{'/products?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">First</a>
+                   th:href="@{'/admin/products?page=' + ${(TotalPage - TotalPage) + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">First</a>
                 <span th:unless="${CurrentPage > 1}">First</span>
             </div>
             <div class="col-sm-1">
                 <a th:if="${CurrentPage < TotalPage}"
-                   th:href="@{'/products?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Next</a>
+                   th:href="@{'/admin/products?page=' + ${CurrentPage + 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Next</a>
                 <span th:unless="${CurrentPage < TotalPage}">Next</span>
             </div>
             <div class="col-sm-1">
                 <a th:if="${CurrentPage > 1}"
-                   th:href="@{'/products?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Previous</a>
+                   th:href="@{'/admin/products?page=' + ${CurrentPage - 1}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Previous</a>
                 <span th:unless="${CurrentPage > 1}">Previous</span>
             </div>
             <div class="col-sm-1">
                 <a th:if="${CurrentPage < TotalPage}"
-                   th:href="@{'/products?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Last</a>
+                   th:href="@{'/admin/products?page=' + ${TotalPage}}+'&limit='+${limit}+'&sortname='+${sortName}+'&sortby=id'+'&query='+${query}">Last</a>
                 <span th:unless="${CurrentPage < TotalPage}">Last</span>
             </div>
         </div>
@@ -127,20 +128,17 @@
         if (message.toString() != "") {
             alert(message)
         }
-    });
-
-
-</script>
+    });</script>
 
 <!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script th:src="@{/js/jquery_slim.js}"></script>
 
 <!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script th:src="@{/js/popper.js}"></script>
 
 <!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script th:src="@{/js/jquery_ajax.js}"></script>
 </body>
 </html>

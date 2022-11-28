@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 public class UserController extends BaseController {
     @Autowired
     private BaseService<User> userService;
@@ -34,7 +34,7 @@ public class UserController extends BaseController {
     @PostMapping("/save")
     public String saveUser(User user, Model model) {
         userService.saveOrEdit(user);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/edit/{id}")
@@ -47,7 +47,7 @@ public class UserController extends BaseController {
     @GetMapping("/delete/{id}")
     public String DeleteUser(@PathVariable("id") Integer id) {
         userService.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
 }

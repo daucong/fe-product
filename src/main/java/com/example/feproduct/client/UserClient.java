@@ -1,6 +1,5 @@
 package com.example.feproduct.client;
 
-import com.example.feproduct.model.Category;
 import com.example.feproduct.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -19,13 +18,7 @@ public class UserClient {
 
     }
 
-
     public void addUser(User user) {
-//        System.out.println(new Gson().toJson(category));
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<String> request = new HttpEntity<String>(new Gson().toJson(category).toString(), headers);
-//        String response = restTemplate.postForObject(ROOT_URI+ "/", request, String.class);
         ResponseEntity<User> response = restTemplate.postForEntity(ROOT_URI, user, User.class);
         response.getBody();
     }
